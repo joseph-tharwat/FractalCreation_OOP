@@ -20,7 +20,8 @@ fractalCreator::fractalCreator(int width, int height):  m_width(width),
 void fractalCreator::run(string name)
 {
     calculateIterations();
-    calculateTotal();
+    calculateTotalIterations();
+    calculateTotalPexilInRange();
     drawFractal();
     writeBitmap(name);
 }
@@ -49,7 +50,29 @@ void fractalCreator::calculateIterations()
     }
 }
 
-void fractalCreator::calculateTotal()
+void fractalCreator::addRange(double endRange, RGB rgb)
+{
+    m_rangeIterations.push_back(endRange*mandelbrot::MAX_ITERATIONS);
+    m_rangeColor.push_back(rgb);
+    m_rangeTotalPexil.push_back(0);
+}
+
+void fractalCreator::calculateTotalPexilInRange()
+{
+    int rangeIndex = 0;
+    for(int i = 0; i< mandelbrot::MAX_ITERATIONS; i++)
+    {
+        int pixelsCount = m_histogram[i];
+        if(i >= m_rangeIterations[rangeIndex+1])
+        {
+            rangeIndex++;
+            
+        }
+        m_rangeTotalPexil[rangeIndex] = m_rangeTotalPexil[rangeIndex] + pixelsCount;
+    }
+}
+
+void fractalCreator::calculateTotalIterations()
 {
     for(int i = 0; i<mandelbrot::MAX_ITERATIONS; i++)
     {
@@ -76,7 +99,7 @@ void fractalCreator::drawFractal()
             }
 			if(color == 0)
 			{
-				m_image.setPixel(x, y, 200, 100, 20);
+				m_image.setPixel(x, y, 0, 100, 20);
 			}
 			else
 			{

@@ -10,7 +10,7 @@ using namespace std;
 class zoomList
 {
 private:
-    // vector<zoom> m_zoomList;
+    vector<zoom> m_zoomList;
     int m_width;
     int m_height;
     double m_xCenter{0};
