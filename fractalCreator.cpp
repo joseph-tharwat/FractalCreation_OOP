@@ -13,8 +13,16 @@ fractalCreator::fractalCreator(int width, int height):  m_width(width),
 
 
 {
-    
-    
+    //first zoom in the middle
+    addZoom(zoom(width/2, height/2, 4.0/width));
+}
+
+void fractalCreator::run(string name)
+{
+    calculateIterations();
+    calculateTotal();
+    drawFractal();
+    writeBitmap(name);
 }
 
 void fractalCreator::addZoom(zoom z)
@@ -66,7 +74,15 @@ void fractalCreator::drawFractal()
                 }
                 color = hue*255;
             }
-            m_image.setPixel(x, y, 0, color, 0);
+			if(color == 0)
+			{
+				m_image.setPixel(x, y, 200, 100, 20);
+			}
+			else
+			{
+				m_image.setPixel(x, y, color, 0, 0);
+			}
+           
         }
     }
 }

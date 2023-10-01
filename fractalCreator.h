@@ -20,6 +20,7 @@ private:
     uint32_t m_total{0};
 public:
     fractalCreator(int width, int height);
+    void run(string name);
     void addZoom(zoom z);
     void calculateIterations();
     void calculateTotal();

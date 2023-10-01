@@ -19,7 +19,9 @@ void zoomList::add(zoom z)
 pair<double, double> zoomList::doZoom(int x, int y)
 {
     double xFractal = m_xCenter + (x-m_width/2) * m_scale; 
-    double yFractal = m_yCenter + (y-m_height/2) * m_scale;
+    /*negative sign here, because the first pexil in bitmap is in the bottom,
+    but in the screen coords the first bit is in the above.*/
+    double yFractal = m_yCenter + -(y-m_height/2) * m_scale;
 
     return pair(xFractal, yFractal);
 }
