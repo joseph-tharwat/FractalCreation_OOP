@@ -66,7 +66,6 @@ void fractalCreator::calculateTotalPexilInRange()
         if(i >= m_rangeIterations[rangeIndex+1])
         {
             rangeIndex++;
-            
         }
         m_rangeTotalPexil[rangeIndex] = m_rangeTotalPexil[rangeIndex] + pixelsCount;
     }
@@ -80,6 +79,20 @@ void fractalCreator::calculateTotalIterations()
     }
 }
 
+int fractalCreator::getRange(int iterations)
+{
+    int range = 0;
+    for(int i =0; i< m_rangeIterations.size(); i++)
+    {
+        if(iterations > m_rangeIterations[i])
+        {
+            range = i;
+            break;
+        }
+    }
+    return range;
+}
+
 void fractalCreator::drawFractal()
 {
     for(int x = 0; x<m_width; x++)
@@ -87,25 +100,27 @@ void fractalCreator::drawFractal()
         for(int y = 0; y<m_height; y++)
         {
             uint32_t iterations = m_fractal[y * m_width + x];
-            uint8_t color = 0;
+            
+            RGB startColor(m_rangeColor[getRange(iterations)]);
+            RGB endColor(m_rangeColor[getRange(iterations+1)]);
+            int totalPexilInRange = m_rangeTotalPexil[getRange(iterations+1)];
+            RGB diffColor = endColor - startColor;
+            RGB result(0,0,0);
+            int startRange = m_rangeIterations[getRange(iterations)];
+            
             if(iterations != mandelbrot::MAX_ITERATIONS)
             {
-                double hue = 0.0;
-                for(int i=0; i<= iterations; i++)
+                int totalPexil = 0;
+                for(int i = startRange; i<= iterations; i++)
                 {
-                    hue = hue + (double)m_histogram[i]/m_total;
+                    totalPexil = totalPexil + m_histogram[i];
                 }
-                color = hue*255;
+                result.red = startColor.red + diffColor.red * (double)totalPexil/totalPexilInRange;
+                result.green = startColor.green + diffColor.green * (double)totalPexil/totalPexilInRange;
+                result.blue = startColor.blue + diffColor.blue * (double)totalPexil/totalPexilInRange;
             }
-			if(color == 0)
-			{
-				m_image.setPixel(x, y, 0, 100, 20);
-			}
-			else
-			{
-				m_image.setPixel(x, y, color, 0, 0);
-			}
-           
+            
+            m_image.setPixel(x, y, result.red, result.green, result.blue);
         }
     }
 }

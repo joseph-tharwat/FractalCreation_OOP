@@ -30,6 +30,7 @@ public:
     void addRange(double range, RGB rgb);
     void calculateTotalPexilInRange();
     void calculateTotalIterations();
+    int getRange(int iterations);
     void drawFractal();
     void writeBitmap(string name);
     ~fractalCreator();
