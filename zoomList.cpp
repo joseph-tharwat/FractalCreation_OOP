@@ -23,7 +23,7 @@ pair<double, double> zoomList::doZoom(int x, int y)
     double xFractal = m_xCenter + (x-m_width/2) * m_scale; 
     double yFractal = m_yCenter + (y-m_height/2) * m_scale;
 
-    return pair(xFractal, yFractal);
+    return pair<double, double>(xFractal, yFractal);
 }
 
 

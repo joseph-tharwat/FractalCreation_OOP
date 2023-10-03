@@ -22,6 +22,8 @@ private:
     vector<int> m_rangeIterations;
     vector<RGB> m_rangeColor;
     vector<int> m_rangeTotalPexil;
+    bool m_bGotFirstRange = false; 
+    
 public:
     fractalCreator(int width, int height);
     void run(string name);
